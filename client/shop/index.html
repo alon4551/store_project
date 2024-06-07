@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="shop">
+      <h1>Shop</h1>
+      <div class="gallery"></div>
+    </div>
+    <div class="cart" id="cart">
+      <label> shoping cart </label>
+      <div class="shoping">
+        <table>
+          <tr class="title">
+            <th>שם מוצר</th>
+            <th>מחיר ליחידה</th>
+            <th>כמות</th>
+            <th>סה"כ</th>
+          </tr>
+          <tr class="row">
+            <td>banana</td>
+            <td>5</td>
+            <td><button>+</button><label>2</label><button>-</button></td>
+            <td></td>
+          </tr>
+        </table>
+        <input type="button" onclick="payment()" value="תשלום" />
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

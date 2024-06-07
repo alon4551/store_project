@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>
+            Sign Up Form
+        </h1>
+        <form class="container" method="post" action="/addNewUser" onsubmit="return validate()">
+            <label for="" class="field">ID</label>
+            <input class="field" type="text" id="id" placeholder="id" placeholder="enter id number"/>
+            <label for="" class="field">Name</label>
+            <input class="field" type="text" id="name"placeholder="enter fullname"/>
+            <label for="" class="field">Email</label>
+            <input class="field" type="text" id="email" placeholder="enter email address"/>
+            <label for="" id="field">Password</label>
+            <input class="field" type="text" id="password" placeholder="enter password"/>
+            <label for="" class="field">Confirm Pssword</label>
+            <input class="field" type="text" id="confirm" placeholder="confirm password"/>
+            <input type="submit" />
+        </form>
+    </div>
+</body>
+<script src="script.js"></script>
+</html>
