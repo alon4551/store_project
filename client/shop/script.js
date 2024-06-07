@@ -80,7 +80,9 @@ const getRow = (item)=>{
     name = Object.assign(document.createElement('td'),{className:'name',innerText:item.name})
     price = Object.assign(document.createElement('td'),{className:'price',innerText:item.price})
     inc = Object.assign(document.createElement('button'),{className:'inc',innerText:'+'})
+    inc.addEventListener('click',()=>{changeAmount(true,item)})
     dec = Object.assign(document.createElement('button'),{className:'dec',innerText:'-'})
+    dec.addEventListener('click',()=>{changeAmount(false,item)})
     amount = Object.assign(document.createElement('td'),{className:'amount',innerText:item.amount})
     sum = Object.assign(document.createElement('td'),{className:'sum',innerText:item.price*item.amount})
     amount.appendChild(inc)
@@ -91,9 +93,17 @@ const getRow = (item)=>{
     row.appendChild(sum)
     return row
 }
-const changeAmount = (diraction,item)=>{
-let row = shopingCart.items.filter(item =>item._id==item._id)[0]
-console.log(row)
+const changeAmount = (forawrd,selected)=>{
+let row = shopingCart.items.filter(item =>item._id==selected._id)[0]
+if(forawrd){
+    row.amount++
+}
+else{
+    row.amount--
+    if(row.amount<=0)
+        shopingCart.items = shopingCart.items.filter(item=>item._id!=row._id)
+}
+loadShopingCart()
 }
 clearShopingCart()
 loadProducts()
