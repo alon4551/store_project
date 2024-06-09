@@ -78,12 +78,17 @@ th,td{
         opacity: 1;
     }
     100% {
-        display: none;
-        opacity: 0;
+        display: block;
+        opacity: 1;
     }
 }
 
 .show .shoping{
     display: block;
     animation: showCart 5s forwards;
+}
+.payment{
+    width: 100%;
+    display: flex;
+    justify-content:space-evenly;
 }

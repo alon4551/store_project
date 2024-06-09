@@ -15,8 +15,6 @@ const loadProducts = async () =>{
 const showCart = ()=>{
     const cart = document.getElementById('cart');
             cart.classList.add('show');
-
-            // Remove the class after 5 seconds to reset the state
             setTimeout(() => {
                 cart.classList.remove('show');
             }, 5000);
@@ -35,11 +33,13 @@ const addToCart = (index)=>{
             amount:1
         })
     }
-    calcTotal()
-    loadShopingCart()
+    reDisplay()
     showCart()
 }
-
+const reDisplay = ()=>{
+    calcTotal()
+    loadShopingCart()
+}
 const calcTotal= ()=>{
     let total =0
     shopingCart.items.forEach(item => {
@@ -73,6 +73,7 @@ const loadShopingCart = ()=>{
     shopingCart.items.forEach(item => {
         document.querySelector('table').appendChild(getRow(item))
     });
+    document.querySelector('#total').innerText = `סה"כ לתשלום ${shopingCart.total} ש"ח`
 }
 const getRow = (item)=>{
     let row,name,price,amount,inc,dec,sum
@@ -103,7 +104,10 @@ else{
     if(row.amount<=0)
         shopingCart.items = shopingCart.items.filter(item=>item._id!=row._id)
 }
-loadShopingCart()
+reDisplay()
+}
+const payment =()=>{
+    
 }
 clearShopingCart()
 loadProducts()
