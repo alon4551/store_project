@@ -1,3 +1,4 @@
+require('jquery')
 let store = [],shopingCart={
     customer:'',
     total:0,
@@ -20,7 +21,27 @@ const showCart = ()=>{
                 cart.classList.remove('show');
             }, 5000);
 }
-const addToCart = (index)=>{
+const addToCart = (index, item)=>{
+    
+    if (!localStorage.getItem('cart')) localStorage.setItem('cart',JSON.stringify([]))
+    const cart = JSON.parse (localStorage.getItem('cart'))
+    
+    const itemNames = cart.find(cartItem => cartItem.name === item.name)
+    if (itemNames.length != 0) {
+        itemNames['amount'] += 1
+    }
+    else {
+        cart.push({
+            name: item.name,
+            amount: 1,
+            price: item.price,
+            _id: item._id
+        })
+    }
+    localStorage.setItem('cart',JSON.stringify(cart))
+    // console.log(cart)
+
+    return 
     let found =false
     shopingCart.items.forEach(item => {
         if(item._id==store[index]._id&&found==false){
@@ -39,8 +60,6 @@ const addToCart = (index)=>{
     showCart()
 }
 const reDisplay = ()=>{
-    calcTotal()
-    localStorage.setItem('shopingCart',JSON.stringify(shopingCart))
     loadShopingCart()
 }
 const calcTotal= ()=>{
@@ -59,7 +78,7 @@ const getCard = (item,index)=>{
         innerText:'buy'
     })
     buyBtn.addEventListener('click',()=>{
-        addToCart(index)
+        addToCart(index, item)
     })
     card.appendChild(name)
     card.appendChild(price)
@@ -72,22 +91,24 @@ const clearShopingCart = ()=>{
     })
 }
 const loadShopingCart = ()=>{
+    
     clearShopingCart()
-    shopingCart = JSON.parse(localStorage.getItem('shopingCart'))
-    shopingCart.items.forEach(item => {
+    shopingCart = JSON.parse(localStorage.getItem('cart'))
+    shopingCart.forEach(item => {
         document.querySelector('table').appendChild(getRow(item))
     });
     document.querySelector('#total').innerText = `סה"כ לתשלום ${shopingCart.total} ש"ח`
 }
 const getRow = (item)=>{
-    let row,name,price,amount,inc,dec,sum
+    let row,name,price,amount,inc,dec,sum,remove
+
     row = Object.assign(document.createElement('tr'),{className:'row'})
     name = Object.assign(document.createElement('td'),{className:'name',innerText:item.name})
     price = Object.assign(document.createElement('td'),{className:'price',innerText:item.price})
     inc = Object.assign(document.createElement('button'),{className:'inc',innerText:'+'})
-    inc.addEventListener('click',()=>{changeAmount(true,item)})
+    inc.addEventListener('click',()=>{changeAmount(1,item)})
     dec = Object.assign(document.createElement('button'),{className:'dec',innerText:'-'})
-    dec.addEventListener('click',()=>{changeAmount(false,item)})
+    dec.addEventListener('click',()=>{changeAmount(-1,item)})
     amount = Object.assign(document.createElement('td'),{className:'amount',innerText:item.amount})
     sum = Object.assign(document.createElement('td'),{className:'sum',innerText:item.price*item.amount})
     amount.appendChild(inc)
@@ -98,16 +119,12 @@ const getRow = (item)=>{
     row.appendChild(sum)
     return row
 }
-const changeAmount = (forawrd,selected)=>{
-    let row = shopingCart.items.filter(item =>item._id==selected._id)[0]
-    if(forawrd){
-        row.amount++
-    }
-    else{
-        row.amount--
-        if(row.amount<=0)
-            shopingCart.items = shopingCart.items.filter(item=>item._id!=row._id)
-    }
+const changeAmount = (amount,selected)=>{
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    const selecteditem = cart.find((item)=>item.name===selected.name)
+    selecteditem['amount']+=amount
+    if(selecteditem['amount']<1) return
+    localStorage.setItem('cart',JSON.stringify(cart))
     reDisplay()
 }
 const payment =async()=>{
@@ -122,3 +139,4 @@ const payment =async()=>{
 localStorage.setItem('shopingCart',JSON.stringify(shopingCart))
 clearShopingCart()
 loadProducts()
+loadShopingCart()

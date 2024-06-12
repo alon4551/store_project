@@ -69,14 +69,14 @@ th,td{
         display: block;
         opacity: 0;
     }
-    15%{
+    /* 15%{
         display: block;
         opacity: 1;
     }
     95% {
         display: block;
         opacity: 1;
-    }
+    } */
     100% {
         display: block;
         opacity: 1;
@@ -85,7 +85,7 @@ th,td{
 
 .show .shoping{
     display: block;
-    animation: showCart 5s forwards;
+    animation: showCart 1s forwards ease-in;
 }
 .payment{
     width: 100%;

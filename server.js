@@ -275,4 +275,4 @@ app.delete('/deleteProduct',async (req,res)=>{
     }
 })
 
-app.listen(3000,()=>{console.log('hello world, server is on port local host:3000')});
+app.listen(3000,()=>{console.log('hello world, server is on port http://localhost:3000')});
