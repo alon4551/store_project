@@ -34,6 +34,8 @@ const usersModel = db.model('users',userSchema);
 const productModel = db.model('products',productSchema);
 const cartModel = db.model('cart',cartSchema);
 const itemsModel = db.model('items',itemSchema);
+
+
 app.get('/',(req,res)=>{
     res.sendFile(clientPath+'/homepage/index.html')
 })
@@ -131,7 +133,6 @@ app.get('/getUserCart',async (req,res)=>{
 })
 app.post('/tempShopingCart',(req,res)=>{
     let {customer,total,items}=req.body
-    console.log(req.body)
     shopingCart = {
         customer:customer,
         total:total,
@@ -140,18 +141,23 @@ app.post('/tempShopingCart',(req,res)=>{
     res.sendStatus(200)
 })
 app.post('/addNewUser',async(req,res)=>{
-    let {name,password,email} = req.body;
+    let {name,id,password,email} = req.body;
     let temp ={
+        id:id,
         name:name,
         email:email,
         password:password
     }
     try{
+         if(JSON.stringify(await usersModel.findOne({id:id}))!=null)
+            res.sendStatus(400)
+        else{
         await usersModel.insertMany(temp)
         res.sendStatus(200)
+        }
     }
     catch{
-        throw new Error('error')
+        res.sendStatus(400)
     }
 }
 )
@@ -212,6 +218,19 @@ app.post('/login',async (req,res)=>{
     else
         res.sendStatus(404)
 })
+app.get('/getShopingTempCart',(req,res)=>{
+    res.json(shopingCart)
+})
+app.post('/payment',(req,res)=>{
+    let {custmer,total,items} = req.body
+    shopingCart = {
+        custmer:custmer,
+        total,total,
+        items,items
+    }
+    console.log(shopingCart,"the correct")
+    res.sendFile(clientPath+'/payment/')
+})
 app.post('/updateUser',async (req,res)=>{
     let {name,oldId,email,password,newId} = req.body
     let item = {
@@ -255,4 +274,5 @@ app.delete('/deleteProduct',async (req,res)=>{
 
     }
 })
+
 app.listen(3000,()=>{console.log('hello world, server is on port local host:3000')});

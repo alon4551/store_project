@@ -1,6 +1,9 @@
-const shopingCart = await fetch('/tempShopingCart')
-const loadShopingCart=()=>{
+
+let shopingCart = {}
+const loadShopingCart=async()=>{
    clearShopingCart()
+   console.log('hello world')
+    shopingCart = JSON.parse(await fetch('/getShopingTempCart').then(response => response.json()))
    shopingCart.items.forEach(item => {
     document.querySelector('table').appendChild(getRow(item))
     });

@@ -1,11 +1,9 @@
-
 let store = [],shopingCart={
     customer:'',
     total:0,
     items:[]
 }
 const loadProducts = async () =>{
-    shopingCart = await fetch('/tempShopingCart').then(response => response.json())
     let data = await fetch('/sortProductByName').then(response=>response.json())
     document.querySelector('#name').innerText = `Hello ${shopingCart.customer}`
     store = data
@@ -36,11 +34,13 @@ const addToCart = (index)=>{
             amount:1
         })
     }
+   
     reDisplay()
     showCart()
 }
 const reDisplay = ()=>{
     calcTotal()
+    localStorage.setItem('shopingCart',JSON.stringify(shopingCart))
     loadShopingCart()
 }
 const calcTotal= ()=>{
@@ -73,6 +73,7 @@ const clearShopingCart = ()=>{
 }
 const loadShopingCart = ()=>{
     clearShopingCart()
+    shopingCart = JSON.parse(localStorage.getItem('shopingCart'))
     shopingCart.items.forEach(item => {
         document.querySelector('table').appendChild(getRow(item))
     });
@@ -110,17 +111,14 @@ const changeAmount = (forawrd,selected)=>{
     reDisplay()
 }
 const payment =async()=>{
-    let res = await fetch ('/tempShopingCart',{
+    await fetch ('/payment',{
         headers:{
             "Content-Type":"application/json"
         },
         method:'post',
         body:JSON.stringify(shopingCart)
     })
-    if(res.status == 200)
-        window.location.href = '/payment'
-    else
-        console.log('error')
 }
+localStorage.setItem('shopingCart',JSON.stringify(shopingCart))
 clearShopingCart()
 loadProducts()

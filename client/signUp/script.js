@@ -71,17 +71,18 @@ const addNewUser= async()=>{
         if(item.id!='confirm')
         user[item.id] = item.value
     })
+    console.log(user)
     let res = await fetch ('/addNewUser',{
         method:'post',
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify({
-            id:document.querySelector()
-        })
+        body:JSON.stringify(user)
     })
-    if(res.status(200))
+    if(res.status==200)
         window.location.href='/'
+    else
+        showPopup('cannot be register, user is allready in system')
     
 }
 const showPopup = (message)=> {
