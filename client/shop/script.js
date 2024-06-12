@@ -1,10 +1,13 @@
+
 let store = [],shopingCart={
     customer:'',
     total:0,
     items:[]
 }
 const loadProducts = async () =>{
+    shopingCart = await fetch('/tempShopingCart').then(response => response.json())
     let data = await fetch('/sortProductByName').then(response=>response.json())
+    document.querySelector('#name').innerText = `Hello ${shopingCart.customer}`
     store = data
     let gallery = document.querySelector('.gallery')
     gallery.innerHTML = ''
@@ -95,19 +98,29 @@ const getRow = (item)=>{
     return row
 }
 const changeAmount = (forawrd,selected)=>{
-let row = shopingCart.items.filter(item =>item._id==selected._id)[0]
-if(forawrd){
-    row.amount++
+    let row = shopingCart.items.filter(item =>item._id==selected._id)[0]
+    if(forawrd){
+        row.amount++
+    }
+    else{
+        row.amount--
+        if(row.amount<=0)
+            shopingCart.items = shopingCart.items.filter(item=>item._id!=row._id)
+    }
+    reDisplay()
 }
-else{
-    row.amount--
-    if(row.amount<=0)
-        shopingCart.items = shopingCart.items.filter(item=>item._id!=row._id)
-}
-reDisplay()
-}
-const payment =()=>{
-    
+const payment =async()=>{
+    let res = await fetch ('/tempShopingCart',{
+        headers:{
+            "Content-Type":"application/json"
+        },
+        method:'post',
+        body:JSON.stringify(shopingCart)
+    })
+    if(res.status == 200)
+        window.location.href = '/payment'
+    else
+        console.log('error')
 }
 clearShopingCart()
 loadProducts()

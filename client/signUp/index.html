@@ -1,33 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-    <div class="main">
-        <h1>
-            Sign Up Form
-        </h1>
-        <form class="container" method="post" action="/addNewUser" onsubmit="return validate()">
-            <label class="tag" for="id">ID</label>
-<input class="field" type="text" id="id" placeholder="enter id number" onfocus="reset('id')" />
-<label class="tag" for="name">Name</label>
-<input class="field" type="text" id="name" placeholder="enter fullname" onfocus="reset('name')" />
-<label class="tag" for="email">Email</label>
-<input class="field" type="text" id="email" placeholder="enter email address" onfocus="reset('email')" />
-<label class="tag" for="password">Password</label>
-<input class="field" type="text" id="password" placeholder="enter password" onfocus="reset('password')" />
-<label class="tag" for="confirm">Confirm Password</label>
-<input class="field" type="text" id="confirm" placeholder="confirm password" onfocus="reset('confirm')" />
-<input type="submit" />
-        </form>
+  <body>
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="errorPopup">
+      <p id="errorMessage">An error occurred.</p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
-</body>
-<script src="script.js"></script>
-
+    <div class="main">
+      <h1>Sign Up Form</h1>
+      <div class="container">
+        <label class="tag" for="id">ID</label>
+        <input
+          class="field"
+          type="text"
+          id="id"
+          placeholder="enter id number"
+        />
+        <label class="tag" for="name">Name</label>
+        <input
+          class="field"
+          type="text"
+          id="name"
+          placeholder="enter fullname"
+        />
+        <label class="tag" for="email">Email</label>
+        <input
+          class="field"
+          type="text"
+          id="email"
+          placeholder="enter email address"
+        />
+        <label class="tag" for="password">Password</label>
+        <input
+          class="field"
+          type="text"
+          id="password"
+          placeholder="enter password"
+        />
+        <label class="tag" for="confirm">Confirm Password</label>
+        <input
+          class="field"
+          type="text"
+          id="confirm"
+          placeholder="confirm password"
+        />
+        <input type="button" onclick="addNewUser()"/>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
 </html>

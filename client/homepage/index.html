@@ -1,24 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  </head>
+  <body>
     <h1>Log In</h1>
-    
-    <form action="/login" method="post" onsubmit="return validtion()">
-        <label for="" class="field">Email</label>
-        <input type="text" class="field" name="email" placeholder="Enter email">
-        <label for="" class="field" >Password</label>
-        <input type="text" class="field" name ="password" placeholder="Enter password">
-        <div>
-            <input type="submit">
-            <input type="button" onclick="signup()" value="הרשמה">
-        </div>
-    </form>
-</body>
-    <script src="script.js"></script>
+
+    <div>
+      <label for="" class="field">Email</label>
+      <input
+        type="text"
+        class="field"
+        name="email"
+        id="email"
+        placeholder="Enter email"
+      />
+      <label for="" class="field">Password</label>
+      <input
+        id="password"
+        type="text"
+        class="field"
+        name="password"
+        placeholder="Enter password"
+      />
+      <div>
+        <input type="button" onclick=" validtion()" value="כניסה" />
+        <input type="button" onclick="signup()" value="הרשמה" />
+      </div>
+    </div>
+  </body>
+  <script>
+    const signup = () => {
+      window.location.href = "/signUp";
+    };
+    const validtion = async () => {
+      let email = document.querySelector("#email"),
+        password = document.querySelector("#password");
+      console.log(email.value, password.value);
+      if (email.value == "" || password == "") return false;
+      let res = await fetch("/login", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+        }),
+      });
+      if (res.status == 200) window.location.href = "/shop";
+      else alert("email or password are incorrect");
+    };
+  </script>
 </html>
