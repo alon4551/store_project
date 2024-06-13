@@ -9,6 +9,17 @@
   <body>
     <div class="shop">
       <h1 id="name">Shop</h1>
+      <div>
+        <select name="" id="sort" onchange="sort()">
+          <option value="price">Sort by Price</option>
+          <option value="name">Sort by Name</option>
+        </select>
+
+        <select name="" id="diraction" onchange="sort()">
+          <option value="up">↑</option>
+          <option value="down">↓</option>
+        </select>
+      </div>
       <div class="gallery"></div>
     </div>
     <div class="cart" id="cart">

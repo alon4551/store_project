@@ -2,12 +2,13 @@
 let shopingCart = {}
 const loadShopingCart=async()=>{
    clearShopingCart()
-   console.log('hello world')
-    shopingCart = JSON.parse(await fetch('/getShopingTempCart').then(response => response.json()))
-   shopingCart.items.forEach(item => {
+   shopingCart = JSON.parse(localStorage.getItem('cart'))
+   console.log(shopingCart)
+   shopingCart.forEach(item => {
     document.querySelector('table').appendChild(getRow(item))
     });
-    document.querySelector('#total').innerText = `סה"כ לתשלום ${shopingCart.total} ש"ח`
+    document.querySelector('#total').innerText = `סה"כ לתשלום ${localStorage.getItem('total')} ש"ח`
+    document.querySelector('#customer').innerText = `${JSON.parse(localStorage.getItem('customer')).name} בבקשה תאשר`
 }
 const getRow = (item)=>{
     let row,name,price,amount,sum
@@ -26,5 +27,31 @@ const clearShopingCart= ()=>{
     document.querySelectorAll('.row').forEach(item=>{
         item.remove()
     })
+}
+const confirmPayment = async     ()=>{
+    const customer = JSON.parse(localStorage.getItem('customer'))
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    const data = {
+        customer:customer.id,
+        total:JSON.parse(localStorage.getItem('total')),
+        items:cart
+    }
+    let response = await fetch('/confirmPayment',{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(data)
+    })
+    if(response.status ==200){
+        localStorage.setItem('customer',"")
+        localStorage.setItem('cart',"")
+        localStorage.setItem('total',0)
+        alert('payment confirm')
+        window.location.href='/'
+    }
+    else{
+        console.log('error')
+    }
 }
 loadShopingCart()

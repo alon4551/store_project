@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <form action="">
-        <div class="shoping-cart">
-            <table>
-                <tr class="title">
-                  <th>שם מוצר</th>
-                  <th>מחיר ליחידה</th>
-                  <th>כמות</th>
-                  <th>סה"כ</th>
-                </tr>
-              </table>
-              <p id="total">
-
-              </p>
-        </div>
-        <div>
-            <label id ="customer">customer name</label>
-            <input type="submit" value="payment"/>
-            table
-        </div>
-    </form>
-</body>
-<script src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div>
+      <div class="shoping-cart">
+        <table>
+          <tr class="title">
+            <th>שם מוצר</th>
+            <th>מחיר ליחידה</th>
+            <th>כמות</th>
+            <th>סה"כ</th>
+          </tr>
+        </table>
+        <p id="total"></p>
+      </div>
+      <div>
+        <label id="customer">customer name</label>
+        <input type="button" onclick="confirmPayment()" value="payment" />
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
 </html>

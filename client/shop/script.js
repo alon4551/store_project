@@ -1,16 +1,10 @@
-require('jquery')
-let store = [],shopingCart={
-    customer:'',
-    total:0,
-    items:[]
-}
-const loadProducts = async () =>{
-    let data = await fetch('/sortProductByName').then(response=>response.json())
-    document.querySelector('#name').innerText = `Hello ${shopingCart.customer}`
-    store = data
+
+let products
+const loadProducts = async (list) =>{
+    document.querySelector('#name').innerText = `Hello ${JSON.parse(localStorage.getItem('customer')).name}`
     let gallery = document.querySelector('.gallery')
     gallery.innerHTML = ''
-    data.map((item,index) => {
+    list.map((item,index) => {
         gallery.appendChild(getCard(item,index))
     });
 }
@@ -25,9 +19,8 @@ const addToCart = (index, item)=>{
     
     if (!localStorage.getItem('cart')) localStorage.setItem('cart',JSON.stringify([]))
     const cart = JSON.parse (localStorage.getItem('cart'))
-    
     const itemNames = cart.find(cartItem => cartItem.name === item.name)
-    if (itemNames.length != 0) {
+    if (itemNames) {
         itemNames['amount'] += 1
     }
     else {
@@ -39,35 +32,22 @@ const addToCart = (index, item)=>{
         })
     }
     localStorage.setItem('cart',JSON.stringify(cart))
-    // console.log(cart)
-
-    return 
-    let found =false
-    shopingCart.items.forEach(item => {
-        if(item._id==store[index]._id&&found==false){
-            item.amount++
-            found = true
-        }
-    });
-    if(!found){
-        shopingCart.items.push({
-            ...store[index],
-            amount:1
-        })
-    }
-   
+    
     reDisplay()
-    showCart()
 }
 const reDisplay = ()=>{
+    calcTotal()
     loadShopingCart()
 }
 const calcTotal= ()=>{
     let total =0
-    shopingCart.items.forEach(item => {
-        total+=(item.price*item.amount)
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    cart.forEach(item => {
+        total+=item.price*item.amount
     });
-    shopingCart.total=total
+    console.log(total)
+    document.querySelector('#total').innerHTML = `סה"כ לתשלום ${total} ש"ח`
+    localStorage.setItem('total',total)
 }
 const getCard = (item,index)=>{
     let card,name,price,buyBtn;
@@ -91,17 +71,15 @@ const clearShopingCart = ()=>{
     })
 }
 const loadShopingCart = ()=>{
-    
     clearShopingCart()
-    shopingCart = JSON.parse(localStorage.getItem('cart'))
-    shopingCart.forEach(item => {
+    let shopingCart = localStorage.getItem('cart')
+    shopingCart = JSON.parse(shopingCart)
+    shopingCart.forEach((item) => {
         document.querySelector('table').appendChild(getRow(item))
     });
-    document.querySelector('#total').innerText = `סה"כ לתשלום ${shopingCart.total} ש"ח`
 }
 const getRow = (item)=>{
     let row,name,price,amount,inc,dec,sum,remove
-
     row = Object.assign(document.createElement('tr'),{className:'row'})
     name = Object.assign(document.createElement('td'),{className:'name',innerText:item.name})
     price = Object.assign(document.createElement('td'),{className:'price',innerText:item.price})
@@ -111,13 +89,22 @@ const getRow = (item)=>{
     dec.addEventListener('click',()=>{changeAmount(-1,item)})
     amount = Object.assign(document.createElement('td'),{className:'amount',innerText:item.amount})
     sum = Object.assign(document.createElement('td'),{className:'sum',innerText:item.price*item.amount})
+    remove =Object.assign(document.createElement('button'),{innerText:"X"})
+    remove.addEventListener('click',()=>{removeItem(item)})
     amount.appendChild(inc)
     amount.appendChild(dec)
     row.appendChild(name)
     row.appendChild(price)
     row.appendChild(amount)
     row.appendChild(sum)
+    row.appendChild(remove)
     return row
+}
+const removeItem = (selecteditem)=>{
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    const items = cart.filter((item)=>item.name!==selecteditem.name)
+    localStorage.setItem('cart',JSON.stringify(items))
+    reDisplay()
 }
 const changeAmount = (amount,selected)=>{
     const cart = JSON.parse(localStorage.getItem('cart'))
@@ -128,15 +115,21 @@ const changeAmount = (amount,selected)=>{
     reDisplay()
 }
 const payment =async()=>{
-    await fetch ('/payment',{
-        headers:{
-            "Content-Type":"application/json"
-        },
-        method:'post',
-        body:JSON.stringify(shopingCart)
-    })
+   window.location.href='/payment'
 }
-localStorage.setItem('shopingCart',JSON.stringify(shopingCart))
-clearShopingCart()
-loadProducts()
-loadShopingCart()
+const sort = async ()=>{
+    const sortType=document.querySelector('#sort')
+    const dirType=document.querySelector('#diraction')
+    loadProducts(await fetch('/sortProducts',{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            type:sortType.value,
+            diraction:dirType.value
+        })
+    }).then(response=>response.json()))
+}
+sort()
+reDisplay()

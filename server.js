@@ -28,14 +28,16 @@ const cartSchema = db.Schema({
     total:Number,
     items: [itemSchema]
 })
-let shopingCart ={}
 
 const usersModel = db.model('users',userSchema);
 const productModel = db.model('products',productSchema);
 const cartModel = db.model('cart',cartSchema);
 const itemsModel = db.model('items',itemSchema);
 
-
+app.use((req,res,next)=> {
+    console.log('Hello from middleware')
+    next() 
+})
 app.get('/',(req,res)=>{
     res.sendFile(clientPath+'/homepage/index.html')
 })
@@ -46,25 +48,12 @@ app.get('/signUp',(req,res)=>{
 app.get('/shop',(req,res)=>{
     res.sendFile(clientPath+'/shop/')
 })
-app.use((req,res,next)=>{
-    next()
-    })
+
    
 app.get('/payment',(req,res)=>{
     return res.sendFile(clientPath+'/payment/',)
 })
-app.get('/getUser',async (req,res)=>{
-    let {name} = req.body
-    try{
-        res.json(await usersModel.findOne({name:name}))
-    }
-    catch (err){
-        throw Error({message:err.message})
-    }
-})
-app.get('/tempShopingCart',(req,res)=>{
-    res.json(shopingCart)
-})
+
 app.get('/getUsers',async (req,res)=>{
     try{
         res.json(await usersModel.find({}))
@@ -88,6 +77,27 @@ app.get('/getProducts',async(req,res)=>{
     }
     catch(err){
         throw Error({message:err.message})
+    }
+})
+app.post('/sortProducts',async(req,res)=>{
+    let {type,diraction}= req.body
+    try{
+    if(type =='price' &&diraction =='up'){
+        res.json(await productModel.find({}).sort({price:1}))
+    }
+    else if(type =='price' && diraction =='down'){
+        res.json(await productModel.find({}).sort({price:-1}))
+    }
+    else if(type =='name' &&diraction =='up'){
+        res.json(await productModel.find({}).sort({name:1}))
+    }
+    else{
+        res.json(await productModel.find({}).sort({name:-1}))
+    }
+    }
+    catch(err){
+        console.log(err)
+        throw Error(err)
     }
 })
 app.get('/reverseSortProductByName',async (req,res)=>{
@@ -131,15 +141,7 @@ app.get('/getUserCart',async (req,res)=>{
         throw Error({message:err.message})
     }
 })
-app.post('/tempShopingCart',(req,res)=>{
-    let {customer,total,items}=req.body
-    shopingCart = {
-        customer:customer,
-        total:total,
-        items:items
-    }
-    res.sendStatus(200)
-})
+
 app.post('/addNewUser',async(req,res)=>{
     let {name,id,password,email} = req.body;
     let temp ={
@@ -175,19 +177,21 @@ app.post('/addNewProduct',async(req,res)=>{
         throw new Error('error')
     }
 })
-app.post('/addNewCart',async(req,res)=>{
+app.post('/confirmPayment',async(req,res)=>{
     let {customer,total,items} = req.body;
     let temp ={
         customer:customer,
         total:total,
         items:items
     }
+    console.log(temp)
     try{
         await cartModel.insertMany(temp)
-        res.json({message: `cart is add to db`})
+        res.sendStatus(200,{message:'record add to DB'})
     }
-    catch{
-        throw new Error('error')
+    catch(err){
+        console.log(err)
+        throw new Error(err)
     }
 })
 app.post('/updateProduct',async (req,res)=>{
@@ -204,31 +208,22 @@ app.post('/updateProduct',async (req,res)=>{
         throw new Error('error')
     }
 })
+app.post('/getUser',async(req,res)=>{
+    let {email,password} = req.body
+    let info = await usersModel.findOne({email:email,password:password})
+    res.json(info)
+})
 app.post('/login',async (req,res)=>{
     let {email,password} = req.body
     let info = await usersModel.findOne({email:email,password:password})
+    console.log(info)
     if(info!=null){
-        shopingCart={
-            customer:info.name,
-            total:0,
-            items:[]
-        }
         res.sendStatus(200)
     }
     else
         res.sendStatus(404)
 })
-app.get('/getShopingTempCart',(req,res)=>{
-    res.json(shopingCart)
-})
-app.post('/payment',(req,res)=>{
-    let {custmer,total,items} = req.body
-    shopingCart = {
-        custmer:custmer,
-        total,total,
-        items,items
-    }
-    console.log(shopingCart,"the correct")
+app.get('/payment',(req,res)=>{
     res.sendFile(clientPath+'/payment/')
 })
 app.post('/updateUser',async (req,res)=>{
@@ -241,7 +236,7 @@ app.post('/updateUser',async (req,res)=>{
     }
     try{
         await user.findOneAndUpdate({id:oldId},item,{new:true})
-        res.json({message: `user ${id} has been updated in db`})
+        res.sendStatus(200,{message:'record add to DB'})
     }
     catch{
         throw new Error('error')
@@ -274,5 +269,11 @@ app.delete('/deleteProduct',async (req,res)=>{
 
     }
 })
+
+
+app.get('/all',(req,res,next)=>{
+        res.sendFile(clientPath+'/all/')
+})
+
 
 app.listen(3000,()=>{console.log('hello world, server is on port http://localhost:3000')});
