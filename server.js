@@ -34,10 +34,7 @@ const productModel = db.model('products',productSchema);
 const cartModel = db.model('cart',cartSchema);
 const itemsModel = db.model('items',itemSchema);
 
-app.use((req,res,next)=> {
-    console.log('Hello from middleware')
-    next() 
-})
+
 app.get('/',(req,res)=>{
     res.sendFile(clientPath+'/homepage/index.html')
 })
@@ -270,6 +267,17 @@ app.delete('/deleteProduct',async (req,res)=>{
     }
 })
 
+app.use((req,res,next)=> {
+    console.log(req.query.admin)
+    
+    if(req.query.admin == true&&req.query.admin!=null){
+        next() 
+    }
+    else{
+
+        res.send('not admin, please leave')
+    }
+})
 
 app.get('/all',(req,res,next)=>{
         res.sendFile(clientPath+'/all/')
