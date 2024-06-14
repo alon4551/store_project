@@ -24,7 +24,7 @@ const itemSchema = db.Schema({
     amount:Number
 })
 const cartSchema = db.Schema({
-    customer: String,
+    customer: userSchema,
     total:Number,
     items: [itemSchema]
 })
@@ -45,7 +45,9 @@ app.get('/signUp',(req,res)=>{
 app.get('/shop',(req,res)=>{
     res.sendFile(clientPath+'/shop/')
 })
-
+app.get('/allCarts',async(req,res)=>{
+    res.json(await cartModel.find({}))
+})
    
 app.get('/payment',(req,res)=>{
     return res.sendFile(clientPath+'/payment/',)
