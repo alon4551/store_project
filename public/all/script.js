@@ -27,7 +27,7 @@ const getShopingCartItem = (item)=>{
     return row
 }
 const loadRecords = async ()=>{
-    let data = await fetch('/allCarts').then(response=>response.json())
+    let data = await fetch('/getCarts').then(response=>response.json())
     document.querySelectorAll('.row').forEach(item=>{
         item.remove()
     })

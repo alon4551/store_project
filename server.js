@@ -2,9 +2,10 @@
 const experss = require('express')
 const bp = require('body-parser')
 const db = require('mongoose')
+const path = require('path')
 const app = experss()
-const clientPath = __dirname +'/client'
-app.use(experss.static('client'))
+const clientPath = path.join( __dirname ,'public')
+app.use(experss.static(clientPath))
 app.use(bp.json())
 db.connect('mongodb+srv://alon:bHd1tdVjiFyX5ZMh@svproject.xdtqtan.mongodb.net/classDb')
 
@@ -35,6 +36,7 @@ const cartModel = db.model('cart',cartSchema);
 const itemsModel = db.model('items',itemSchema);
 
 
+
 app.get('/',(req,res)=>{
     res.sendFile(clientPath+'/homepage/index.html')
 })
@@ -45,7 +47,7 @@ app.get('/signUp',(req,res)=>{
 app.get('/shop',(req,res)=>{
     res.sendFile(clientPath+'/shop/')
 })
-app.get('/allCarts',async(req,res)=>{
+app.get('/getCarts',async(req,res)=>{
     res.json(await cartModel.find({}))
 })
    
@@ -269,21 +271,14 @@ app.delete('/deleteProduct',async (req,res)=>{
     }
 })
 
-app.use((req,res,next)=> {
-    console.log(req.query.admin)
-    
-    if(req.query.admin == true&&req.query.admin!=null){
-        next() 
-    }
-    else{
-
-        res.send('not admin, please leave')
-    }
+app.use((req,res,next)=>{
+    if(req.query.admin ==-'true')
+    next()
+    else
+        res.sendStatus(403)
 })
-
-app.get('/all',(req,res,next)=>{
-        res.sendFile(clientPath+'/all/')
+app.get('/all',(req,res)=>{
+        res.sendFile(clientPath+'/cartPage/')
 })
-
 
 app.listen(3000,()=>{console.log('hello world, server is on port http://localhost:3000')});
