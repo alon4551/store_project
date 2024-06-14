@@ -32,7 +32,7 @@ const confirmPayment = async     ()=>{
     const customer = JSON.parse(localStorage.getItem('customer'))
     const cart = JSON.parse(localStorage.getItem('cart'))
     const data = {
-        customer:customer.id,
+        customer:customer,
         total:JSON.parse(localStorage.getItem('total')),
         items:cart
     }
