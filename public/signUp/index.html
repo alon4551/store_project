@@ -13,45 +13,59 @@
       <p id="errorMessage">An error occurred.</p>
       <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
+    <a href="/" id="back">Back</a>
     <div class="main">
-      <h1>Sign Up Form</h1>
+      <h1>Sign Up</h1>
       <div class="container">
         <label class="tag" for="id">ID</label>
         <input
           class="field"
           type="text"
           id="id"
-          placeholder="enter id number"
+          placeholder="Enter id number"
         />
         <label class="tag" for="name">Name</label>
         <input
           class="field"
           type="text"
           id="name"
-          placeholder="enter fullname"
+          placeholder="Enter fullname"
         />
         <label class="tag" for="email">Email</label>
         <input
           class="field"
-          type="text"
+          type="password"
           id="email"
-          placeholder="enter email address"
+          placeholder="Enter email address"
         />
         <label class="tag" for="password">Password</label>
-        <input
-          class="field"
-          type="text"
+        <div class="passwordContainer">
+
+                <input
+              class="field"
+            type="password"
           id="password"
-          placeholder="enter password"
-        />
-        <label class="tag" for="confirm">Confirm Password</label>
+        placeholder="Enter password"
+        
+      />
+      <label class="toggle-password" onclick="togglePasswordVisibility('password', this)">
+        ☻
+      </label>
+</div>
+
+<label class="tag" for="confirm">Confirm Password</label>
+  <div class="passwordContainer">
         <input
-          class="field"
-          type="text"
-          id="confirm"
-          placeholder="confirm password"
-        />
-        <input type="button" onclick="addNewUser()" value="register" />
+      class="field"
+    type="text"
+  id="confirm"
+placeholder="Confirm password"
+/>
+<label class="toggle-password" onclick="togglePasswordVisibility('confirm', this)">
+  ☻
+</label>
+</div>
+        <input type="button" onclick="addNewUser()" value="Register" />
       </div>
     </div>
   </body>

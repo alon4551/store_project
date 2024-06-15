@@ -1,6 +1,7 @@
 html,body{
     height: 100%;
     overflow-y: hidden;
+    background-color: #DBDBDB;
 }
 body{
     display: flex;
@@ -9,29 +10,41 @@ body{
 }
 .shop{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap:5px;
+    height: 100%;
+    background-color: #7D83FF;
 }
 .gallery{
     display: flex;
     flex-wrap: wrap;
     width:100%;
-    justify-content: start;
+    height: 100%;
+    justify-content: center;
     gap: 5px;
     overflow-y: scroll;
 }
 .gallery >.card{
     flex: 1 1 calc(25% - 10px); 
     box-sizing: border-box; 
-    max-width: calc(25% - 10px); 
+    max-width: 100px; 
 }
 .card{
     display: flex ;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 150px;
-    border: 1px solid black ;
-    background-color: lightblue;
+    height: 100px;
+    background-color: #007FFF;
+
+    border-radius: 5%;
     text-align: center;
-    border-radius: 15%;
+    input{
+        background-color: wheat;
+        border:none;
+    }
 }
 
 .cart .shoping {
@@ -41,12 +54,15 @@ body{
 .cart label:hover .shoping,
 .cart:hover .shoping{
     display: block;
+    animation: showCart 1s forwards ease-in;
 }
 
 .cart {
     position: relative;
     height: auto;
     z-index: 1;
+    padding: 5px;
+    width: max-content;
 }
 
 .shoping {
@@ -56,6 +72,27 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     width: 400px; /* Adjust the width as needed */
+}
+.navbar{
+    position: absolute;
+    background-color: white;
+    top:15px;
+    right: 10px;
+    width: auto;
+    z-index: 1;
+    ul{
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap:10px;
+        li:hover{
+            background-color: lightgray;
+            color:white;
+            cursor: pointer;
+        }
+    }
 }
 .shoping table{
     width: 100%;
@@ -69,14 +106,14 @@ th,td{
         display: block;
         opacity: 0;
     }
-    /* 15%{
+     15%{
         display: block;
         opacity: 1;
     }
     95% {
         display: block;
         opacity: 1;
-    } */
+    }
     100% {
         display: block;
         opacity: 1;
@@ -85,10 +122,19 @@ th,td{
 
 .show .shoping{
     display: block;
-    animation: showCart 1s forwards ease-in;
+    animation: showCart 5s forwards ease-in;
 }
 .payment{
     width: 100%;
     display: flex;
-    justify-content:space-evenly;
+    justify-content:start;
+    input{
+        width: 50%;
+        margin: 5px;
+    }
+    label{
+        width: 50%;
+        text-align: center;
+        margin: 5px;
+    }
 }

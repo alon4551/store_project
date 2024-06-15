@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="errorPopup">
+      <p id="errorMessage">An error occurred.</p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+    <a href="/shop" id="back">Back to shop</a>
+    <div class="main">
+      <h1>Profile</h1>
+      <div class="container">
+        <label class="tag" for="id">ID</label>
+        <input
+          class="field fill"
+          type="text"
+          id="id"
+          placeholder="Enter id number"
+        />
+        <label class="tag" for="name">Name</label>
+        <input
+          class="field fill"
+          type="text"
+          id="name"
+          placeholder="Enter fullname"
+        />
+        <label class="tag" for="email">Email</label>
+        <input
+          class="field fill"
+          type="password"
+          id="email"
+          placeholder="Enter email address"
+        />
+        <div class="container mini">
+            <label>Old Password</label>
+            <input
+            class="field"
+            type="password"
+            id="oldPassword"
+            placeholder="Enter email address"
+          />
+          <label>New Password</label>
+            <input
+            class="field"
+            type="password"
+            id="newPassword"
+            placeholder="Enter email address"
+          />
+          <label>Confirm Password</label>
+            <input
+            class="field"
+            type="password"
+            id="confirm"
+            placeholder="Enter email address"
+          />
+            <input value="Update Password"/>
+        </div>
+        <input type="button" onclick="updateInformation()" value="Update Information" />
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

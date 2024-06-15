@@ -185,7 +185,6 @@ app.post('/confirmPayment',async(req,res)=>{
         total:total,
         items:items
     }
-    console.log(temp)
     try{
         await cartModel.insertMany(temp)
         res.sendStatus(200,{message:'record add to DB'})

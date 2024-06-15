@@ -18,8 +18,9 @@ const validation =()=>{
                     result = item.value == document.getElementById('password').value&&item.value.trim()!=''
                     break
             }
-            if(!result)
-               warning+=HandleError(item)+'\n'
+            if(!result){
+               warning+=item.value.trim()==''?`${item.id} field must not be emply \n`: HandleError(item)+'\n'
+            }
             status=status && result
     })
     console.log(status,warning,)
@@ -28,17 +29,18 @@ const validation =()=>{
     return status
 }
 const HandleError =(item)=>{
+
     switch (item.id){
         case "id":
-            return "id is not correct"
+            return "id field is not correct"
         case "email":
-            return "email is not correct"
+            return "email field is not correct"
         case "name":
-            return "name field must not be empty"
+            return "name field field must not be empty"
         case "password":
-            return "password must be at leat with 8 characters and must be letters and numbers"
+            return "password field must be at leat with 8 characters and must be letters and numbers"
         case "confirm":
-            return "2 password must be identical"
+            return "both password must be identical"
     }   
 }
 const validateId= (id)=>{
@@ -65,6 +67,7 @@ const reset = (id)=>{
     }
 }
 const addNewUser= async()=>{
+    if(!validation())return;
     let fields = [...document.getElementsByClassName("field")]
     let user ={}
     fields.forEach(item=>{
@@ -94,4 +97,14 @@ const showPopup = (message)=> {
   const  closePopup = ()=> {
     document.getElementById('popupOverlay').style.display = 'none';
     document.getElementById('errorPopup').style.display = 'none';
+  }
+  const togglePasswordVisibility = (inputId, label)=> {
+    var input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      label.textContent = "☺"; //Change label text to smiling face with open mouth
+    } else {
+      input.type = "password";
+      label.textContent = "☻"; // Change label text back to smiling face
+    }
   }

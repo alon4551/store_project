@@ -4,33 +4,88 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+  
   </head>
-  <body>
-    <h1>Log In</h1>
 
-    <div>
-      <label for="" class="field">Email</label>
-      <input
-        type="text"
-        class="field"
-        name="email"
-        id="email"
-        placeholder="Enter email"
-      />
-      <label for="" class="field">Password</label>
-      <input
-        id="password"
-        type="text"
-        class="field"
-        name="password"
-        placeholder="Enter password"
-      />
-      <div>
-        <input type="button" onclick=" validtion()" value="כניסה" />
-        <input type="button" onclick="signup()" value="הרשמה" />
-      </div>
-    </div>
-  </body>
+  <body>
+    <div class="warper">
+    <h1> Wellcome to my humble shop
+      Please Log In</h1>
+  
+  <div class="container">
+    <label for="" class="field">Email</label>
+  <input
+type="text"
+class="field"
+name="email"
+id="email"
+placeholder="Enter email"
+/>
+<label for="" class="field">Password</label>
+<input
+id="password"
+type="password"
+class="field"
+name="password"
+placeholder="Enter password"
+/>
+<div class="buttons">
+  <input type="button" onclick=" validtion()" value="כניסה" />
+<input type="button" onclick="signup()" value="הרשמה" />
+</div>
+</div>
+</div>
+</body>
+<style>
+  html,body{
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background-color: #DBDBDB;
+    }
+    .warper{
+      width: 50%;
+      text-align: center;
+      border: 1px solid #007FFF;
+      padding:30px;
+      border-radius: 5%;
+    }
+    body{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    h1{
+      font-size: 50px;
+    }
+    .container{
+      display: flex;
+      text-align: left;
+      flex-direction: column;
+      justify-content: center;
+      background-color:#7D83FF;
+      padding: 10px;
+      input{
+        background-color: wheat;
+        border: none;
+        font-size: large;
+      }
+      font-size: larger;
+      gap:10px;
+      .buttons{
+        display: flex;
+        justify-content: space-evenly;
+        input{
+          width: 48%;
+        }
+        input:hover{
+          border: 1px black solid;
+        }
+      }
+    }
+  </style>
   <script>
     const signup = () => {
       window.location.href = "/signUp";
@@ -38,7 +93,10 @@
     const validtion = async () => {
       let email = document.querySelector("#email"),
         password = document.querySelector("#password");
-      if (email.value == "" || password == "") return false;
+      if (email.value == "" || password == "") {
+        alert('email or password fields are empty')
+        return false;
+      }
       let res = await fetch("/login", {
         method: "post",
         headers: {
@@ -59,6 +117,8 @@
           }),
         }).then((response) => response.json());
         localStorage.setItem("customer", JSON.stringify(customer));
+        localStorage.setItem("cart", []);
+        localStorage.setItem("total", 0);
         window.location.href = "/shop";
       } else alert("email or password are incorrect");
     };

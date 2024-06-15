@@ -1,0 +1,41 @@
+html,body{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #7D83FF;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.recipt,.shoping-cart{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+
+    
+    }
+    .shoping-cart{
+        font-size: large;
+    background-color: #007FFF;
+    padding: 20px;
+    border-radius: 5%;
+    input{
+        border: none;
+        background-color: wheat;
+        width: 100%;
+        font-size: larger;
+    }
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 20px;
+    overflow: scroll;
+    
+}
+table,td,th{
+    border:1px black solid;
+    text-align: center;
+}

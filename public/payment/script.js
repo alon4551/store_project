@@ -3,12 +3,11 @@ let shopingCart = {}
 const loadShopingCart=async()=>{
    clearShopingCart()
    shopingCart = JSON.parse(localStorage.getItem('cart'))
-   console.log(shopingCart)
    shopingCart.forEach(item => {
     document.querySelector('table').appendChild(getRow(item))
     });
-    document.querySelector('#total').innerText = `סה"כ לתשלום ${localStorage.getItem('total')} ש"ח`
-    document.querySelector('#customer').innerText = `${JSON.parse(localStorage.getItem('customer')).name} בבקשה תאשר`
+    document.querySelector('#total').innerText = `Sum of ${localStorage.getItem('total')} NIS`
+    document.querySelector('#customer').innerText = `${JSON.parse(localStorage.getItem('customer')).name} please confirm payment`
 }
 const getRow = (item)=>{
     let row,name,price,amount,sum

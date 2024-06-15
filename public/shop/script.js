@@ -32,7 +32,7 @@ const addToCart = (index, item)=>{
         })
     }
     localStorage.setItem('cart',JSON.stringify(cart))
-    
+    showCart()
     reDisplay()
 }
 const reDisplay = ()=>{
@@ -46,7 +46,7 @@ const calcTotal= ()=>{
         total+=item.price*item.amount
     });
     console.log(total)
-    document.querySelector('#total').innerHTML = `סה"כ לתשלום ${total} ש"ח`
+    document.querySelector('#total').innerHTML = `Sum of ${total} NIS`
     localStorage.setItem('total',total)
 }
 const getCard = (item,index)=>{
@@ -79,7 +79,7 @@ const loadShopingCart = ()=>{
     });
 }
 const getRow = (item)=>{
-    let row,name,price,amount,inc,dec,sum,remove
+    let row,name,price,amount,inc,dec,sum,remove,removeTd
     row = Object.assign(document.createElement('tr'),{className:'row'})
     name = Object.assign(document.createElement('td'),{className:'name',innerText:item.name})
     price = Object.assign(document.createElement('td'),{className:'price',innerText:item.price})
@@ -89,15 +89,17 @@ const getRow = (item)=>{
     dec.addEventListener('click',()=>{changeAmount(-1,item)})
     amount = Object.assign(document.createElement('td'),{className:'amount',innerText:item.amount})
     sum = Object.assign(document.createElement('td'),{className:'sum',innerText:item.price*item.amount})
+    removeTd = document.createElement('td')
     remove =Object.assign(document.createElement('button'),{innerText:"X"})
     remove.addEventListener('click',()=>{removeItem(item)})
+    removeTd.appendChild(remove)
     amount.appendChild(inc)
     amount.appendChild(dec)
     row.appendChild(name)
     row.appendChild(price)
     row.appendChild(amount)
     row.appendChild(sum)
-    row.appendChild(remove)
+    row.appendChild(removeTd)
     return row
 }
 const removeItem = (selecteditem)=>{
@@ -130,6 +132,12 @@ const sort = async ()=>{
             diraction:dirType.value
         })
     }).then(response=>response.json()))
+}
+const logOut = ()=>{
+    localStorage.setItem('customer',"")
+        localStorage.setItem('cart',"")
+        localStorage.setItem('total',0)
+        window.location.href='/'
 }
 sort()
 reDisplay()

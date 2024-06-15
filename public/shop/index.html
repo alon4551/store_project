@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="navbar">
+      <ul>
+        <li onclick="logOut()">Log Out</li>
+        <li>Profile</li>
+      </ul>
+    </div>
     <div class="shop">
       <h1 id="name">Shop</h1>
       <div>
@@ -27,14 +33,15 @@
       <div class="shoping">
         <table>
           <tr class="title">
-            <th>שם מוצר</th>
-            <th>מחיר ליחידה</th>
-            <th>כמות</th>
-            <th>סה"כ</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Sum</th>
+            <th>Remove From Cart</th>
           </tr>
         </table>
         <div class="payment">
-          <input type="button" onclick="payment()" value="תשלום" />
+          <input type="button" onclick="payment()" value="Proceed to payment" />
           <label id="total"></label>
         </div>
       </div>

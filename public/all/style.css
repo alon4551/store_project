@@ -1,7 +1,11 @@
+html,body{
+    background-color: #DBDBDB;
+}
 #list{
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    text-align: center;
 }
 .title{
     font-size: xx-large;
@@ -10,6 +14,20 @@
         border: 1px solid black ;
     }
 }
-.row{
-
+td,th,tr{
+    border:2px solid black;
+    background-color: #7D83FF;
+}
+.even{
+    background-color: #7D83FF;
+}
+.odd{
+    background-color: #007FFF;
+}
+.customerCart{
+    width: 100%;
+    td,th,tr{
+        border:1px solid black;
+        background-color: wheat;
+    }
 }
