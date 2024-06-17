@@ -2,7 +2,7 @@ const LoadInformation = ()=>{
     let customer = JSON.parse(localStorage.getItem('customer'))
     let fields = document.getElementsByClassName('fill')
     for(let i=0;i<fields.length;i++)
-        console.log(fields[i])
+        fields[i].value = customer[fields[i].id]
 }
 const togglePasswordVisibility = (inputId, label)=> {
     var input = document.getElementById(inputId);
@@ -26,7 +26,7 @@ const togglePasswordVisibility = (inputId, label)=> {
   }
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,passwordRegax =/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
   const validation =()=>{
-      let values = [...document.getElementsByClassName('field')],result,status = true,warning=""
+      let values = [...document.getElementsByClassName('fill')],result,status = true,warning=""
       values.map((item)=>{
               switch(item.id){
                   case 'id':
@@ -48,8 +48,8 @@ const togglePasswordVisibility = (inputId, label)=> {
                  warning+=item.value.trim()==''?`${item.id} field must not be emply \n`: HandleError(item)+'\n'
               }
               status=status && result
+              console.log(status,warning)
       })
-      console.log(status,warning,)
       if(!status)
           showPopup(warning)
       return status
@@ -85,4 +85,29 @@ const togglePasswordVisibility = (inputId, label)=> {
       },0)
       return (value%10==0)
   }
+  const updateInformation = async ()=>{
+      let fields = document.getElementsByClassName('fill')
+      let customer = JSON.parse(localStorage.getItem('customer'))
+      let oldId=customer.id
+      if(!validation())return ;
+    for(let i=0;i<fields.length;i++){
+        customer[fields[i].id] = fields[i].value
+    }
+    let response = await fetch('/updateUser',{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({...customer,oldId:oldId})
+    }).then(res=>res.json())
+    console.log(response)
+    if(response.status == 200)
+        {
+            localStorage.setItem('customer',JSON.stringify(customer))
+            window.location.href('/shop')
+        }
+        else{
+            showPopup(`user with id ${customer.id} is allready exsit`)
+        }
+}
   LoadInformation()

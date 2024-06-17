@@ -227,18 +227,23 @@ app.get('/payment',(req,res)=>{
     res.sendFile(clientPath+'/payment/')
 })
 app.post('/updateUser',async (req,res)=>{
-    let {name,oldId,email,password,newId} = req.body
+    let {name,id,email,password,_id,oldId} = req.body
     let item = {
-        id:newId,
+        id:id,
         name:name,
         email,email,
         password:password
     }
     try{
-        await user.findOneAndUpdate({id:oldId},item,{new:true})
+        if(JSON.stringify(await usersModel.findOne({id:id}))!=null&&oldId!=id)
+            res.sendStatus(400)
+        else{
+        await usersModel.findOneAndUpdate({_id:_id},item,{new:true})
         res.sendStatus(200,{message:'record add to DB'})
+        }
     }
-    catch{
+    catch(err){
+        console.log(err)
         throw new Error('error')
     }
 
